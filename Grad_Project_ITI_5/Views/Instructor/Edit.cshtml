@@ -1,0 +1,166 @@
+﻿@model Grad_Project_ITI_5.Models.Instructor
+
+@{
+    ViewData["Title"] = "Edit Instructor";
+}
+
+<!-- FontAwesome Icons & Animate.css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<style>
+    :root {
+        --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    }
+
+    body {
+        background-color: #f8fafc;
+    }
+
+    /* Header Styling */
+    .hero-header {
+        background: var(--warning-gradient);
+        border-radius: 20px;
+        padding: 25px 30px;
+        color: white;
+        box-shadow: 0 15px 30px rgba(217, 119, 6, 0.25);
+        margin-bottom: 30px;
+    }
+
+    /* Form Container Styling */
+    .form-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        padding: 35px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+    }
+
+    .form-control, .form-select {
+        border-radius: 12px;
+        padding: 12px 15px;
+        border: 1.5px solid #cbd5e1;
+        transition: all 0.2s ease;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #d97706;
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+        }
+
+    /* Buttons */
+    .btn-update {
+        background: var(--warning-gradient);
+        color: white;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 600;
+        border: none;
+        box-shadow: 0 8px 15px rgba(245, 158, 11, 0.25);
+        transition: all 0.3s ease;
+    }
+
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(245, 158, 11, 0.35);
+            color: white;
+        }
+
+    .btn-back {
+        background: #f1f5f9;
+        color: #475569;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 600;
+        border: none;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+        .btn-back:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+</style>
+
+<div class="container py-4 animate__animated animate__fadeIn" style="max-width: 800px;">
+
+    <!-- Header Banner -->
+    <div class="hero-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h2 class="fw-bold mb-1"><i class="fa-solid fa-pen-to-square me-2"></i> Edit Instructor</h2>
+            <p class="mb-0 opacity-75">Modify the information below to update instructor details</p>
+        </div>
+        <div>
+            <a asp-action="Index" class="btn btn-light text-dark fw-bold rounded-pill px-4 shadow-sm">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back to List
+            </a>
+        </div>
+    </div>
+
+    <!-- Form Box -->
+    <div class="form-container">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-12 mb-4" role="alert"></div>
+
+            <!-- Hidden Primary Key ID -->
+            <input type="hidden" asp-for="InstructorId" />
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label">
+                    <i class="fa-solid fa-user text-warning me-1"></i> Full Name
+                </label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">
+                    <i class="fa-solid fa-envelope text-warning me-1"></i> Email Address
+                </label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label">
+                    <i class="fa-solid fa-phone text-success me-1"></i> Phone Number
+                </label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="DepartmentId" class="form-label">
+                    <i class="fa-solid fa-building text-info me-1"></i> Department
+                </label>
+                <select asp-for="DepartmentId" class="form-select" asp-items="ViewBag.DepartmentId">
+                    <option value="">-- Select Department --</option>
+                </select>
+                <span asp-validation-for="DepartmentId" class="text-danger small mt-1 d-block"></span>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 pt-3 border-top">
+                <button type="submit" class="btn btn-update d-inline-flex align-items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Save Changes</span>
+                </button>
+                <a asp-action="Index" class="btn btn-back">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,85 @@
+
+@model Grad_Project_ITI_5.Models.Student
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Student Details</h1>
+
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-2">Full Name</dt>
+    <dd class="col-sm-10">@Model.FullName</dd>
+
+    <dt class="col-sm-2">Email</dt>
+    <dd class="col-sm-10">@Model.Email</dd>
+
+    <dt class="col-sm-2">Phone Number</dt>
+    <dd class="col-sm-10">@Model.PhoneNumber</dd>
+
+    <dt class="col-sm-2">Enrollment Date</dt>
+    <dd class="col-sm-10">@Model.EnrollmentDate.ToShortDateString()</dd>
+
+    <dt class="col-sm-2">Department ID</dt>
+    <dd class="col-sm-10">@Model.DepartmentId</dd>
+
+    <dt class="col-sm-2">Student Image</dt>
+    <dd class="col-sm-10">
+        @if (!string.IsNullOrEmpty(Model.ProfileImage))
+        {
+            <img src="@Model.ProfileImage"
+                 alt="Student Image"
+                 width="120"
+                 height="120"
+                 style="object-fit: cover;" />
+        }
+        else
+        {
+            <span>No image uploaded</span>
+        }
+    </dd>
+</dl>
+<hr />
+
+<h3>Enrolled Courses</h3>
+
+@if (Model.StudentCourses != null &&
+     Model.StudentCourses.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Course ID</th>
+                <th>Course Title</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.StudentCourses)
+            {
+                <tr>
+                    <td>@item.CourseId</td>
+                    <td>@item.Course.Title</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>This student is not enrolled in any courses yet.</p>
+}
+
+<a asp-controller="StudentCourses"
+   asp-action="Create"
+   class="btn btn-success">
+    Enroll in a Course
+</a>
+
+<hr />
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.StudentId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+

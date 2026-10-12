@@ -1,0 +1,315 @@
+﻿@model IEnumerable<Grad_Project_ITI_5.Models.Instructor>
+
+@{
+    ViewData["Title"] = "Instructors Management";
+}
+
+<!-- FontAwesome Icons & Animate.css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    }
+
+    body {
+        background-color: #f8fafc;
+    }
+
+    /* Header Styling */
+    .hero-header {
+        background: var(--primary-gradient);
+        border-radius: 20px;
+        padding: 30px;
+        color: white;
+        box-shadow: 0 15px 30px rgba(79, 70, 229, 0.25);
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-header::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    /* Stat Cards */
+    .stat-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        border: 1px solid #f1f5f9;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: white;
+    }
+
+    /* Table Styling */
+    .custom-table-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        padding: 25px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .table {
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
+
+    .table thead th {
+        border: none;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        padding-bottom: 15px;
+    }
+
+    .table tbody tr {
+        background: #ffffff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        border-radius: 12px;
+        transition: all 0.2s ease;
+    }
+
+    .table tbody tr:hover {
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        background-color: #f8fafc;
+    }
+
+    .table tbody td {
+        border: none;
+        padding: 18px 15px;
+        vertical-align: middle;
+    }
+
+    /* Avatar & Badges */
+    .avatar-circle {
+        width: 42px;
+        height: 42px;
+        background: var(--accent-gradient);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 16px;
+        box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+    }
+
+    .dept-badge {
+        background: #e0e7ff;
+        color: #4338ca;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        display: inline-block;
+    }
+
+    /* Action Buttons */
+    .btn-action {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        border: none;
+        text-decoration: none !important;
+    }
+
+    .btn-action-edit { background: #fef3c7; color: #d97706; }
+    .btn-action-edit:hover { background: #d97706; color: white; }
+
+    .btn-action-details { background: #e0f2fe; color: #0284c7; }
+    .btn-action-details:hover { background: #0284c7; color: white; }
+
+    .btn-action-delete { background: #fee2e2; color: #dc2626; }
+    .btn-action-delete:hover { background: #dc2626; color: white; }
+
+    .btn-add-new {
+        background: var(--success-gradient);
+        color: white;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 600;
+        box-shadow: 0 8px 15px rgba(16, 185, 129, 0.25);
+        transition: all 0.3s ease;
+        border: none;
+        text-decoration: none !important;
+    }
+
+    .btn-add-new:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 20px rgba(16, 185, 129, 0.35);
+        color: white;
+    }
+</style>
+
+<div class="container-fluid py-4 animate__animated animate__fadeIn">
+
+    <!-- Header Banner -->
+    <div class="hero-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <h1 class="fw-bold mb-1"><i class="fa-solid fa-chalkboard-user me-2"></i> Instructors List</h1>
+            <p class="mb-0 opacity-75">Manage faculty members and their respective departments effortlessly</p>
+        </div>
+        <div>
+            <a asp-action="Create" class="btn btn-add-new d-inline-flex align-items-center gap-2">
+                <i class="fa-solid fa-plus-circle fs-5"></i>
+                <span>Add New Instructor</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="stat-card d-flex align-items-center gap-3">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <span class="text-muted fs-6 d-block">Total Instructors</span>
+                    <h3 class="fw-bold mb-0">@Model.Count()</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card d-flex align-items-center gap-3">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+                <div>
+                    <span class="text-muted fs-6 d-block">Available Departments</span>
+                    <h3 class="fw-bold mb-0">@Model.Select(i => i.DepartmentId).Distinct().Count()</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card d-flex align-items-center gap-3">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #047857);">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+                <div>
+                    <span class="text-muted fs-6 d-block">System Status</span>
+                    <h3 class="fw-bold mb-0 text-success" style="font-size: 1.2rem;">Active <i class="fa-solid fa-circle-check fs-6 ms-1"></i></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Table Container -->
+    <div class="custom-table-container">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Instructor</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Department</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <div class="text-muted">
+                                    <i class="fa-regular fa-folder-open fs-1 d-block mb-3 opacity-50"></i>
+                                    <h5>No instructors registered yet</h5>
+                                    <p class="small">Click "Add New Instructor" to get started.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="avatar-circle">
+                                            @(string.IsNullOrEmpty(item.FullName) ? "I" : item.FullName.Substring(0, 1).ToUpper())
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-0 text-dark">@item.FullName</h6>
+                                            <small class="text-muted">ID: #@item.InstructorId</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="mailto:@item.Email" class="text-decoration-none text-dark d-inline-flex align-items-center gap-2">
+                                        <i class="fa-regular fa-envelope text-primary"></i>
+                                        <span>@item.Email</span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="d-inline-flex align-items-center gap-2 text-secondary">
+                                        <i class="fa-solid fa-phone text-success"></i>
+                                        <span>@item.PhoneNumber</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="dept-badge">
+                                        <i class="fa-solid fa-graduation-cap me-1"></i>
+                                        @(item.Department != null ? item.Department.DepartmentId.ToString() : "N/A")
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a asp-action="Edit" asp-route-id="@item.InstructorId" class="btn-action btn-action-edit" title="Edit">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.InstructorId" class="btn-action btn-action-details" title="Details">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.InstructorId" class="btn-action btn-action-delete" title="Delete">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

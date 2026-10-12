@@ -1,0 +1,162 @@
+﻿@model Grad_Project_ITI_5.Models.Instructor
+
+@{
+    ViewData["Title"] = "Delete Instructor";
+}
+
+<!-- FontAwesome Icons & Animate.css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<style>
+    :root {
+        --danger-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    }
+
+    body {
+        background-color: #f8fafc;
+    }
+
+    /* Header Styling */
+    .hero-header {
+        background: var(--danger-gradient);
+        border-radius: 20px;
+        padding: 25px 30px;
+        color: white;
+        box-shadow: 0 15px 30px rgba(220, 38, 38, 0.25);
+        margin-bottom: 30px;
+    }
+
+    /* Details Card Styling */
+    .delete-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        padding: 35px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .info-group {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 15px 20px;
+        border: 1px solid #f1f5f9;
+        margin-bottom: 15px;
+    }
+
+    .info-label {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        color: #1e293b;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    /* Buttons */
+    .btn-delete-confirm {
+        background: var(--danger-gradient);
+        color: white;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 600;
+        border: none;
+        box-shadow: 0 8px 15px rgba(220, 38, 38, 0.25);
+        transition: all 0.3s ease;
+    }
+
+        .btn-delete-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(220, 38, 38, 0.35);
+            color: white;
+        }
+
+    .btn-back {
+        background: #f1f5f9;
+        color: #475569;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-weight: 600;
+        border: none;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+        .btn-back:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+</style>
+
+<div class="container py-4 animate__animated animate__fadeIn" style="max-width: 800px;">
+
+    <!-- Header Banner -->
+    <div class="hero-header d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <h2 class="fw-bold mb-1"><i class="fa-solid fa-triangle-exclamation me-2"></i> Delete Instructor</h2>
+            <p class="mb-0 opacity-75">Are you sure you want to delete this instructor? This action cannot be undone.</p>
+        </div>
+        <div>
+            <a asp-action="Index" class="btn btn-light text-danger fw-bold rounded-pill px-4 shadow-sm">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back to List
+            </a>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Box -->
+    <div class="delete-card">
+        <div class="alert alert-warning border-0 rounded-12 mb-4 d-flex align-items-center gap-3" role="alert">
+            <i class="fa-solid fa-circle-exclamation fs-3 text-warning"></i>
+            <div>
+                <strong>Warning!</strong> You are about to permanently delete the following record from the database.
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="info-group">
+                    <span class="info-label"><i class="fa-solid fa-user text-danger me-1"></i> Full Name</span>
+                    <p class="info-value">@Model.FullName</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-group">
+                    <span class="info-label"><i class="fa-solid fa-envelope text-danger me-1"></i> Email Address</span>
+                    <p class="info-value">@Model.Email</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-group">
+                    <span class="info-label"><i class="fa-solid fa-phone text-success me-1"></i> Phone Number</span>
+                    <p class="info-value">@Model.PhoneNumber</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-group">
+                    <span class="info-label"><i class="fa-solid fa-building text-info me-1"></i> Department ID</span>
+                    <p class="info-value">@(Model.Department != null ? Model.Department.DepartmentId.ToString() : Model.DepartmentId.ToString())</p>
+                </div>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post" class="mt-4 pt-3 border-top">
+            <input type="hidden" asp-for="InstructorId" />
+            <div class="d-flex align-items-center gap-3">
+                <button type="submit" class="btn btn-delete-confirm d-inline-flex align-items-center gap-2">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span>Yes, Delete</span>
+                </button>
+                <a asp-action="Index" class="btn btn-back">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
